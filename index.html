@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estação Meteorológica IoT - Múltiplos Gráficos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Cabeçalho -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600/20 p-2.5 rounded-xl border border-blue-500/30 text-blue-400">
+                    <i class="fa-solid fa-cloud-sun text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Estação Meteorológica IoT</h1>
+                    <p class="text-xs text-slate-400">ThingSpeak • Atualização a cada 5 min (60 Leituras)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-full border border-slate-800">
+                    <span id="status-dot" class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="status-text" class="text-xs font-medium text-slate-300">Conectado (Intervalo: 5m)</span>
+                </div>
+                <button onclick="buscarDadosThingSpeak()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium px-3 py-1.5 rounded-lg transition border border-slate-700 flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate"></i> Atualizar Agora
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+
+        <!-- Cards de Métricas (5 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            
+            <!-- Temp Interna -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-amber-500/40 transition">
+                <div class="absolute top-0 right-0 p-4 text-amber-500/20 group-hover:text-amber-500/30 transition">
+                    <i class="fa-solid fa-temperature-arrow-up text-3xl"></i>
+                </div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Interna</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span id="card-temp-int" class="text-2xl font-bold text-amber-400">--.-</span>
+                    <span class="text-sm text-slate-400">°C</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <i class="fa-solid fa-house"></i> Campo 1
+                </div>
+            </div>
+
+            <!-- Umidade Interna -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-blue-500/40 transition">
+                <div class="absolute top-0 right-0 p-4 text-blue-500/20 group-hover:text-blue-500/30 transition">
+                    <i class="fa-solid fa-droplet text-3xl"></i>
+                </div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Interna</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span id="card-umi-int" class="text-2xl font-bold text-blue-400">--.-</span>
+                    <span class="text-sm text-slate-400">%</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <i class="fa-solid fa-house"></i> Campo 2
+                </div>
+            </div>
+
+            <!-- Temp Externa -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-orange-500/40 transition">
+                <div class="absolute top-0 right-0 p-4 text-orange-500/20 group-hover:text-orange-500/30 transition">
+                    <i class="fa-solid fa-sun text-3xl"></i>
+                </div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Externa</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span id="card-temp-ext" class="text-2xl font-bold text-orange-400">--.-</span>
+                    <span class="text-sm text-slate-400">°C</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <i class="fa-solid fa-tree"></i> Campo 3
+                </div>
+            </div>
+
+            <!-- Umidade Externa -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-cyan-500/40 transition">
+                <div class="absolute top-0 right-0 p-4 text-cyan-500/20 group-hover:text-cyan-500/30 transition">
+                    <i class="fa-solid fa-cloud-rain text-3xl"></i>
+                </div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Externa</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span id="card-umi-ext" class="text-2xl font-bold text-cyan-400">--.-</span>
+                    <span class="text-sm text-slate-400">%</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <i class="fa-solid fa-tree"></i> Campo 4
+                </div>
+            </div>
+
+            <!-- Pressão Barométrica -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-purple-500/40 transition sm:col-span-2 lg:col-span-1">
+                <div class="absolute top-0 right-0 p-4 text-purple-500/20 group-hover:text-purple-500/30 transition">
+                    <i class="fa-solid fa-gauge text-3xl"></i>
+                </div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Pressão Absoluta</p>
+                <div class="mt-2 flex items-baseline gap-1">
+                    <span id="card-pressao" class="text-2xl font-bold text-purple-400">----.-</span>
+                    <span class="text-xs text-slate-400">hPa</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <i class="fa-solid fa-compass"></i> Campo 6
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Seção dos Gráficos Separados (3 Gráficos) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Gráfico 1: Temperaturas -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 backdrop-blur shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-semibold text-slate-200"><i class="fa-solid fa-temperature-half text-amber-400 mr-2"></i> Temperaturas (°C)</h2>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Interna (C1)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Externa (C3)</span>
+                    </div>
+                </div>
+                <div class="relative h-[280px] w-full">
+                    <canvas id="chartTemp"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico 2: Umidades -->
+            <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 backdrop-blur shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-base font-semibold text-slate-200"><i class="fa-solid fa-droplet text-blue-400 mr-2"></i> Umidades (%)</h2>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> Interna (C2)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Externa (C4)</span>
+                    </div>
+                </div>
+                <div class="relative h-[280px] w-full">
+                    <canvas id="chartUmi"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Gráfico 3: Pressão Barométrica (Largura Total) -->
+        <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 backdrop-blur shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-base font-semibold text-slate-200"><i class="fa-solid fa-gauge text-purple-400 mr-2"></i> Pressão Barométrica Absoluta (hPa)</h2>
+                <span class="inline-flex items-center gap-1 text-xs text-purple-400"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> Barômetro (C6)</span>
+            </div>
+            <div class="relative h-[250px] w-full">
+                <canvas id="chartPressao"></canvas>
+            </div>
+        </div>
+
+        <!-- Tabela de Registros Recentes (Até 60 Leituras) -->
+        <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 backdrop-blur shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-base font-semibold text-slate-200">Tabela de Registros (Últimas 60 Leituras)</h2>
+                <span class="text-xs text-slate-400" id="contador-leituras">Carregando registros...</span>
+            </div>
+            <div class="overflow-x-auto max-h-[400px]">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800/70 text-xs uppercase text-slate-400 border-b border-slate-800 sticky top-0 z-10">
+                        <tr>
+                            <th class="py-3 px-4 rounded-l-lg">Horário / Data</th>
+                            <th class="py-3 px-4">Temp. Interna (C1)</th>
+                            <th class="py-3 px-4">Umi. Interna (C2)</th>
+                            <th class="py-3 px-4">Temp. Externa (C3)</th>
+                            <th class="py-3 px-4">Umi. Externa (C4)</th>
+                            <th class="py-3 px-4 rounded-r-lg">Pressão Absoluta (C6)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-historico" class="divide-y divide-slate-800/50 text-xs font-mono">
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="border-t border-slate-800 bg-slate-900/30 py-4 text-center text-xs text-slate-500">
+        Dashboard ThingSpeak • Atualizado automaticamente a cada 5 minutos
+    </footer>
+
+    <!-- Script de Integração e Gráficos -->
+    <script>
+        // CONFIGURAÇÃO: Substitua 'SEU_CHANNEL_ID' pelo ID numérico do seu canal do ThingSpeak
+        const CHANNEL_ID = '3525228'; 
+        
+        let tempChart = null;
+        let umiChart = null;
+        let pressaoChart = null;
+
+        // Inicializar os 3 Gráficos Chart.js separados
+        function initCharts() {
+            // 1. Gráfico de Temperaturas
+            const ctxTemp = document.getElementById('chartTemp').getContext('2d');
+            tempChart = new Chart(ctxTemp, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Temp. Int (°C)', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
+                        { label: 'Temp. Ext (°C)', data: [], borderColor: '#fb923c', backgroundColor: 'rgba(251, 146, 60, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#64748b', maxTicksLimit: 10 } },
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#fbbf24' } }
+                    }
+                }
+            });
+
+            // 2. Gráfico de Umidades
+            const ctxUmi = document.getElementById('chartUmi').getContext('2d');
+            umiChart = new Chart(ctxUmi, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Umi. Int (%)', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96, 165, 250, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
+                        { label: 'Umi. Ext (%)', data: [], borderColor: '#22d3ee', backgroundColor: 'rgba(34, 211, 238, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#64748b', maxTicksLimit: 10 } },
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#60a5fa' }, min: 0, max: 100 }
+                    }
+                }
+            });
+
+            // 3. Gráfico de Pressão Barométrica
+            const ctxPressao = document.getElementById('chartPressao').getContext('2d');
+            pressaoChart = new Chart(ctxPressao, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        { label: 'Pressão (hPa)', data: [], borderColor: '#c084fc', backgroundColor: 'rgba(192, 132, 252, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#64748b', maxTicksLimit: 15 } },
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#c084fc' }, min: 900, max: 930 }
+                    }
+                }
+            });
+        }
+
+        // Função para Buscar Dados do ThingSpeak (solicitando results=60)
+        async function buscarDadosThingSpeak() {
+            const statusText = document.getElementById('status-text');
+            const statusDot = document.getElementById('status-dot');
+            
+            if (CHANNEL_ID === 'SEU_CHANNEL_ID') {
+                executarSimulacaoRealista();
+                statusText.innerText = "Modo Demonstração (Configure o Channel ID)";
+                statusDot.className = "h-2.5 w-2.5 rounded-full bg-amber-500";
+                return;
+            }
+
+            try {
+                statusText.innerText = "Buscando 60 leituras...";
+                const response = await fetch(`https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?results=60`);
+                const data = await response.json();
+                
+                if (data && data.feeds) {
+                    processarDados(data.feeds);
+                    statusText.innerText = "Conectado (ThingSpeak)";
+                    statusDot.className = "h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse";
+                }
+            } catch (error) {
+                console.error("Erro ao buscar ThingSpeak:", error);
+                statusText.innerText = "Erro na Conexão";
+                statusDot.className = "h-2.5 w-2.5 rounded-full bg-rose-500";
+            }
+        }
+
+        // Processar os Feeds recebidos
+        function processarDados(feeds) {
+            const labels = [];
+            const tempInt = [];
+            const umiInt = [];
+            const tempExt = [];
+            const umiExt = [];
+            const pressao = [];
+
+            const tabelaHTML = [];
+
+            feeds.forEach(feed => {
+                const dataObj = new Date(feed.created_at);
+                const dataHora = dataObj.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+                const ti = parseFloat(feed.field1) || 0; // Campo 1: Temp Interna
+                const ui = parseFloat(feed.field2) || 0; // Campo 2: Umi Interna
+                const te = parseFloat(feed.field3) || 0; // Campo 3: Temp Externa
+                const ue = parseFloat(feed.field4) || 0; // Campo 4: Umi Externa
+                const p  = parseFloat(feed.field6) || 0; // Campo 6: Pressão Absoluta
+
+                labels.push(dataHora);
+                tempInt.push(ti);
+                umiInt.push(ui);
+                tempExt.push(te);
+                umiExt.push(ue);
+                pressao.push(p);
+
+                tabelaHTML.unshift(`
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-2.5 px-4 font-semibold text-slate-400">${dataHora}</td>
+                        <td class="py-2.5 px-4 text-amber-400">${ti.toFixed(1)} °C</td>
+                        <td class="py-2.5 px-4 text-blue-400">${ui.toFixed(1)} %</td>
+                        <td class="py-2.5 px-4 text-orange-400">${te.toFixed(1)} °C</td>
+                        <td class="py-2.5 px-4 text-cyan-400">${ue.toFixed(1)} %</td>
+                        <td class="py-2.5 px-4 text-purple-400">${p.toFixed(1)} hPa</td>
+                    </tr>
+                `);
+            });
+
+            // Atualiza Cards com o último dado registrado
+            const ultimo = feeds[feeds.length - 1];
+            if (ultimo) {
+                document.getElementById('card-temp-int').innerText = (parseFloat(ultimo.field1) || 0).toFixed(1);
+                document.getElementById('card-umi-int').innerText = (parseFloat(ultimo.field2) || 0).toFixed(1);
+                document.getElementById('card-temp-ext').innerText = (parseFloat(ultimo.field3) || 0).toFixed(1);
+                document.getElementById('card-umi-ext').innerText = (parseFloat(ultimo.field4) || 0).toFixed(1);
+                document.getElementById('card-pressao').innerText = (parseFloat(ultimo.field6) || 0).toFixed(1);
+            }
+
+            // Atualiza os 3 Gráficos independentes
+            tempChart.data.labels = labels;
+            tempChart.data.datasets[0].data = tempInt;
+            tempChart.data.datasets[1].data = tempExt;
+            tempChart.update();
+
+            umiChart.data.labels = labels;
+            umiChart.data.datasets[0].data = umiInt;
+            umiChart.data.datasets[1].data = umiExt;
+            umiChart.update();
+
+            pressaoChart.data.labels = labels;
+            pressaoChart.data.datasets[0].data = pressao;
+            pressaoChart.update();
+
+            // Atualiza Tabela e contador
+            document.getElementById('tabela-historico').innerHTML = tabelaHTML.join('');
+            document.getElementById('contador-leituras').innerText = `Total exibido: ${feeds.length} leituras`;
+        }
+
+        // Simulador de fallback para demonstração imediata
+        let simulacaoFeeds = [];
+        function executarSimulacaoRealista() {
+            const agora = new Date();
+            simulacaoFeeds = [];
+            for (let i = 59; i >= 0; i--) {
+                const d = new Date(agora.getTime() - i * 5 * 60000); // intervalo de 5 min
+                simulacaoFeeds.push({
+                    created_at: d.toISOString(),
+                    field1: (22 + Math.sin(i * 0.1) * 3).toFixed(1),
+                    field2: (50 + Math.cos(i * 0.1) * 10).toFixed(1),
+                    field3: (25 + Math.cos(i * 0.1) * 5).toFixed(1),
+                    field4: (45 + Math.sin(i * 0.1) * 12).toFixed(1),
+                    field6: (1013.2 + Math.sin(i * 0.05) * 4).toFixed(1)
+                });
+            }
+            processarDados(simulacaoFeeds);
+        }
+
+        // Inicialização ao carregar a página
+        window.onload = () => {
+            initCharts();
+            buscarDadosThingSpeak();
+
+            // Configura o temporizador para atualizar a cada 5 minutos (300.000 ms)
+            setInterval(buscarDadosThingSpeak, 300000);
+        };
+    </script>
+</body>
+</html>
