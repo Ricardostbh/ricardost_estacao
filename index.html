@@ -48,12 +48,12 @@
         <!-- Cards de Métricas com Mín/Máx do Dia -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             
-            <!-- Temp Interna -->
+            <!-- Temp Externa -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-amber-500/40 transition">
                 <div class="absolute top-0 right-0 p-4 text-amber-500/20 group-hover:text-amber-500/30 transition">
                     <i class="fa-solid fa-temperature-arrow-up text-3xl"></i>
                 </div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Interna</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Externa</p>
                 <div class="mt-2 flex items-baseline gap-1">
                     <span id="card-temp-int" class="text-2xl font-bold text-amber-400">--.-</span>
                     <span class="text-sm text-slate-400">°C</span>
@@ -67,12 +67,12 @@
                 </div>
             </div>
 
-            <!-- Umidade Interna -->
+            <!-- Umidade Externa -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-blue-500/40 transition">
                 <div class="absolute top-0 right-0 p-4 text-blue-500/20 group-hover:text-blue-500/30 transition">
                     <i class="fa-solid fa-droplet text-3xl"></i>
                 </div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Interna</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Externa</p>
                 <div class="mt-2 flex items-baseline gap-1">
                     <span id="card-umi-int" class="text-2xl font-bold text-blue-400">--.-</span>
                     <span class="text-sm text-slate-400">%</span>
@@ -86,12 +86,12 @@
                 </div>
             </div>
 
-            <!-- Temp Externa -->
+            <!-- Temp Interna -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-orange-500/40 transition">
                 <div class="absolute top-0 right-0 p-4 text-orange-500/20 group-hover:text-orange-500/30 transition">
                     <i class="fa-solid fa-sun text-3xl"></i>
                 </div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Externa</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Temp. Interna</p>
                 <div class="mt-2 flex items-baseline gap-1">
                     <span id="card-temp-ext" class="text-2xl font-bold text-orange-400">--.-</span>
                     <span class="text-sm text-slate-400">°C</span>
@@ -105,12 +105,12 @@
                 </div>
             </div>
 
-            <!-- Umidade Externa -->
+            <!-- Umidade Interna -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 backdrop-blur shadow-lg relative overflow-hidden group hover:border-cyan-500/40 transition">
                 <div class="absolute top-0 right-0 p-4 text-cyan-500/20 group-hover:text-cyan-500/30 transition">
                     <i class="fa-solid fa-cloud-rain text-3xl"></i>
                 </div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Externa</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Umidade Interna</p>
                 <div class="mt-2 flex items-baseline gap-1">
                     <span id="card-umi-ext" class="text-2xl font-bold text-cyan-400">--.-</span>
                     <span class="text-sm text-slate-400">%</span>
@@ -151,8 +151,8 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-base font-semibold text-slate-200"><i class="fa-solid fa-temperature-half text-amber-400 mr-2"></i> Temperaturas (°C)</h2>
                     <div class="flex items-center gap-3 text-xs">
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Interna (C1)</span>
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Externa (C3)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Externa (C1)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Interna (C3)</span>
                     </div>
                 </div>
                 <div class="relative h-[280px] w-full"><canvas id="chartTemp"></canvas></div>
@@ -162,8 +162,8 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-base font-semibold text-slate-200"><i class="fa-solid fa-droplet text-blue-400 mr-2"></i> Umidades (%)</h2>
                     <div class="flex items-center gap-3 text-xs">
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> Interna (C2)</span>
-                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Externa (C4)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> Externa (C2)</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Interna (C4)</span>
                     </div>
                 </div>
                 <div class="relative h-[280px] w-full"><canvas id="chartUmi"></canvas></div>
@@ -190,10 +190,10 @@
                     <thead class="bg-slate-800/70 text-xs uppercase text-slate-400 border-b border-slate-800 sticky top-0 z-10">
                         <tr>
                             <th class="py-3 px-4 rounded-l-lg">Horário / Data</th>
-                            <th class="py-3 px-4">Temp. Interna (C1)</th>
-                            <th class="py-3 px-4">Umi. Interna (C2)</th>
-                            <th class="py-3 px-4">Temp. Externa (C3)</th>
-                            <th class="py-3 px-4">Umi. Externa (C4)</th>
+                            <th class="py-3 px-4">Temp. Externa (C1)</th>
+                            <th class="py-3 px-4">Umi. Externa (C2)</th>
+                            <th class="py-3 px-4">Temp. Interna (C3)</th>
+                            <th class="py-3 px-4">Umi. Interna (C4)</th>
                             <th class="py-3 px-4 rounded-r-lg">Pressão Absoluta (C6)</th>
                         </tr>
                     </thead>
@@ -224,8 +224,8 @@
                 data: {
                     labels: [],
                     datasets: [
-                        { label: 'Temp. Int (°C)', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
-                        { label: 'Temp. Ext (°C)', data: [], borderColor: '#fb923c', backgroundColor: 'rgba(251, 146, 60, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
+                        { label: 'Temp. Ext (°C)', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
+                        { label: 'Temp. Int (°C)', data: [], borderColor: '#fb923c', backgroundColor: 'rgba(251, 146, 60, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
                     ]
                 },
                 options: {
@@ -245,8 +245,8 @@
                 data: {
                     labels: [],
                     datasets: [
-                        { label: 'Umi. Int (%)', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96, 165, 250, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
-                        { label: 'Umi. Ext (%)', data: [], borderColor: '#22d3ee', backgroundColor: 'rgba(34, 211, 238, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
+                        { label: 'Umi. Ext (%)', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96, 165, 250, 0.05)', borderWidth: 2, tension: 0.3, fill: true },
+                        { label: 'Umi. Int (%)', data: [], borderColor: '#22d3ee', backgroundColor: 'rgba(34, 211, 238, 0.05)', borderWidth: 2, tension: 0.3, fill: true }
                     ]
                 },
                 options: {
@@ -275,7 +275,7 @@
                     plugins: { legend: { display: false } },
                     scales: {
                         x: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#64748b', maxTicksLimit: 15 } },
-                        y: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#c084fc' }, min: 915, max: 930 }
+                        y: { grid: { color: 'rgba(51, 65, 85, 0.2)' }, ticks: { color: '#c084fc' }, min: 915, max: 928 }
                     }
                 }
             });
@@ -329,10 +329,10 @@
         // Processa dados para os Gráficos, Tabela e Cards principais (último dado)
         function processarGraficoETabela(feeds) {
             const labels = [];
-            const tempInt = [];
-            const umiInt = [];
             const tempExt = [];
             const umiExt = [];
+            const tempInt = [];
+            const umiInt = [];
             const pressao = [];
             const tabelaHTML = [];
 
@@ -340,26 +340,26 @@
                 const dataObj = new Date(feed.created_at);
                 const dataHora = dataObj.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
-                const ti = parseFloat(feed.field1) || 0;
-                const ui = parseFloat(feed.field2) || 0;
-                const te = parseFloat(feed.field3) || 0;
-                const ue = parseFloat(feed.field4) || 0;
+                const te = parseFloat(feed.field1) || 0;
+                const ue = parseFloat(feed.field2) || 0;
+                const ti = parseFloat(feed.field3) || 0;
+                const ui = parseFloat(feed.field4) || 0;
                 const p  = parseFloat(feed.field6) || 0;
 
                 labels.push(dataHora);
-                tempInt.push(ti);
-                umiInt.push(ui);
                 tempExt.push(te);
                 umiExt.push(ue);
+                tempInt.push(ti);
+                umiInt.push(ui);
                 pressao.push(p);
 
                 tabelaHTML.unshift(`
                     <tr class="hover:bg-slate-800/30 transition">
                         <td class="py-2.5 px-4 font-semibold text-slate-400">${dataHora}</td>
-                        <td class="py-2.5 px-4 text-amber-400">${ti.toFixed(1)} °C</td>
-                        <td class="py-2.5 px-4 text-blue-400">${ui.toFixed(1)} %</td>
-                        <td class="py-2.5 px-4 text-orange-400">${te.toFixed(1)} °C</td>
-                        <td class="py-2.5 px-4 text-cyan-400">${ue.toFixed(1)} %</td>
+                        <td class="py-2.5 px-4 text-amber-400">${te.toFixed(1)} °C</td>
+                        <td class="py-2.5 px-4 text-blue-400">${ue.toFixed(1)} %</td>
+                        <td class="py-2.5 px-4 text-orange-400">${ti.toFixed(1)} °C</td>
+                        <td class="py-2.5 px-4 text-cyan-400">${ui.toFixed(1)} %</td>
                         <td class="py-2.5 px-4 text-purple-400">${p.toFixed(1)} hPa</td>
                     </tr>
                 `);
@@ -368,22 +368,22 @@
             // Atualiza Cards com o último dado registrado
             const ultimo = feeds[feeds.length - 1];
             if (ultimo) {
-                document.getElementById('card-temp-int').innerText = (parseFloat(ultimo.field1) || 0).toFixed(1);
-                document.getElementById('card-umi-int').innerText = (parseFloat(ultimo.field2) || 0).toFixed(1);
-                document.getElementById('card-temp-ext').innerText = (parseFloat(ultimo.field3) || 0).toFixed(1);
-                document.getElementById('card-umi-ext').innerText = (parseFloat(ultimo.field4) || 0).toFixed(1);
+                document.getElementById('card-temp-ext').innerText = (parseFloat(ultimo.field1) || 0).toFixed(1);
+                document.getElementById('card-umi-ext').innerText = (parseFloat(ultimo.field2) || 0).toFixed(1);
+                document.getElementById('card-temp-int').innerText = (parseFloat(ultimo.field3) || 0).toFixed(1);
+                document.getElementById('card-umi-int').innerText = (parseFloat(ultimo.field4) || 0).toFixed(1);
                 document.getElementById('card-pressao').innerText = (parseFloat(ultimo.field6) || 0).toFixed(1);
             }
 
             // Atualiza os Gráficos
             tempChart.data.labels = labels;
-            tempChart.data.datasets[0].data = tempInt;
-            tempChart.data.datasets[1].data = tempExt;
+            tempChart.data.datasets[0].data = tempExt;
+            tempChart.data.datasets[1].data = tempInt;
             tempChart.update();
 
             umiChart.data.labels = labels;
-            umiChart.data.datasets[0].data = umiInt;
-            umiChart.data.datasets[1].data = umiExt;
+            umiChart.data.datasets[0].data = umiExt;
+            umiChart.data.datasets[1].data = umiInt;
             umiChart.update();
 
             pressaoChart.data.labels = labels;
@@ -398,20 +398,12 @@
         function processarMinMaxDia(feeds) {
             if (!feeds || feeds.length === 0) return;
 
-            const tempInt = feeds.map(f => parseFloat(f.field1)).filter(v => !isNaN(v));
-            const umiInt  = feeds.map(f => parseFloat(f.field2)).filter(v => !isNaN(v));
-            const tempExt = feeds.map(f => parseFloat(f.field3)).filter(v => !isNaN(v));
-            const umiExt  = feeds.map(f => parseFloat(f.field4)).filter(v => !isNaN(v));
+            const tempExt = feeds.map(f => parseFloat(f.field1)).filter(v => !isNaN(v));
+            const umiExt  = feeds.map(f => parseFloat(f.field2)).filter(v => !isNaN(v));
+            const tempInt = feeds.map(f => parseFloat(f.field3)).filter(v => !isNaN(v));
+            const umiInt  = feeds.map(f => parseFloat(f.field4)).filter(v => !isNaN(v));
             const pressao = feeds.map(f => parseFloat(f.field6)).filter(v => !isNaN(v));
 
-            if (tempInt.length > 0) {
-                document.getElementById('min-temp-int').innerText = Math.min(...tempInt).toFixed(1) + '°';
-                document.getElementById('max-temp-int').innerText = Math.max(...tempInt).toFixed(1) + '°';
-            }
-            if (umiInt.length > 0) {
-                document.getElementById('min-umi-int').innerText = Math.min(...umiInt).toFixed(1) + '%';
-                document.getElementById('max-umi-int').innerText = Math.max(...umiInt).toFixed(1) + '%';
-            }
             if (tempExt.length > 0) {
                 document.getElementById('min-temp-ext').innerText = Math.min(...tempExt).toFixed(1) + '°';
                 document.getElementById('max-temp-ext').innerText = Math.max(...tempExt).toFixed(1) + '°';
@@ -419,6 +411,14 @@
             if (umiExt.length > 0) {
                 document.getElementById('min-umi-ext').innerText = Math.min(...umiExt).toFixed(1) + '%';
                 document.getElementById('max-umi-ext').innerText = Math.max(...umiExt).toFixed(1) + '%';
+            }
+            if (tempInt.length > 0) {
+                document.getElementById('min-temp-int').innerText = Math.min(...tempInt).toFixed(1) + '°';
+                document.getElementById('max-temp-int').innerText = Math.max(...tempInt).toFixed(1) + '°';
+            }
+            if (umiInt.length > 0) {
+                document.getElementById('min-umi-int').innerText = Math.min(...umiInt).toFixed(1) + '%';
+                document.getElementById('max-umi-int').innerText = Math.max(...umiInt).toFixed(1) + '%';
             }
             if (pressao.length > 0) {
                 document.getElementById('min-pressao').innerText = Math.min(...pressao).toFixed(1);
